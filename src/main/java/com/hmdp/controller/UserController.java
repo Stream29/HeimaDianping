@@ -1,12 +1,15 @@
 package com.hmdp.controller;
 
 
+import cn.hutool.core.util.RandomUtil;
 import com.hmdp.dto.LoginFormDTO;
 import com.hmdp.dto.Result;
 import com.hmdp.entity.UserInfo;
 import com.hmdp.service.IUserInfoService;
 import com.hmdp.service.IUserService;
+import com.hmdp.utils.RegexUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -35,9 +38,16 @@ public class UserController {
      * 发送手机验证码
      */
     @PostMapping("code")
-    public Result sendCode(@RequestParam("phone") String phone, HttpSession session) {
-        // TODO 发送短信验证码并保存验证码
-        return Result.fail("功能未完成");
+    public @NotNull Result sendCode(@RequestParam("phone") String phone, HttpSession session) {
+        if (RegexUtils.isPhoneInvalid(phone)) {
+            return Result.fail("手机号格式错误！");
+        }
+        String code = RandomUtil.randomNumbers(6);
+
+        session.setAttribute("code",code);
+        log.debug("发送短信验证码成功，验证码：{}", code);
+        //TODO: 发送短信验证码
+        return Result.ok();
     }
 
     /**
