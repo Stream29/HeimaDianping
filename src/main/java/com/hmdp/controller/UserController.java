@@ -38,7 +38,7 @@ public class UserController {
      * 发送手机验证码
      */
     @PostMapping("code")
-    public @NotNull Result sendCode(@RequestParam("phone") String phone, HttpSession session) {
+    public @NotNull Result sendCode(@RequestParam("phone") @NotNull String phone, @NotNull HttpSession session) {
         if (RegexUtils.isPhoneInvalid(phone)) {
             return Result.fail("手机号格式错误！");
         }
@@ -55,7 +55,7 @@ public class UserController {
      * @param loginForm 登录参数，包含手机号、验证码；或者手机号、密码
      */
     @PostMapping("/login")
-    public Result login(@RequestBody LoginFormDTO loginForm, HttpSession session){
+    public @NotNull Result login(@RequestBody LoginFormDTO loginForm, HttpSession session){
         // TODO 实现登录功能
         return Result.fail("功能未完成");
     }
@@ -65,19 +65,19 @@ public class UserController {
      * @return 无
      */
     @PostMapping("/logout")
-    public Result logout(){
+    public @NotNull Result logout(){
         // TODO 实现登出功能
         return Result.fail("功能未完成");
     }
 
     @GetMapping("/me")
-    public Result me(){
+    public @NotNull Result me(){
         // TODO 获取当前登录的用户并返回
         return Result.fail("功能未完成");
     }
 
     @GetMapping("/info/{id}")
-    public Result info(@PathVariable("id") Long userId){
+    public @NotNull Result info(@PathVariable("id") Long userId){
         // 查询详情
         UserInfo info = userInfoService.getById(userId);
         if (info == null) {

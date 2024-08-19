@@ -10,6 +10,7 @@ import com.hmdp.service.IBlogService;
 import com.hmdp.service.IUserService;
 import com.hmdp.utils.SystemConstants;
 import com.hmdp.utils.UserHolder;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -33,7 +34,7 @@ public class BlogController {
     private IUserService userService;
 
     @PostMapping
-    public Result saveBlog(@RequestBody Blog blog) {
+    public @NotNull Result saveBlog(@RequestBody @NotNull Blog blog) {
         // 获取登录用户
         UserDTO user = UserHolder.getUser();
         blog.setUserId(user.getId());
@@ -44,7 +45,7 @@ public class BlogController {
     }
 
     @PutMapping("/like/{id}")
-    public Result likeBlog(@PathVariable("id") Long id) {
+    public @NotNull Result likeBlog(@PathVariable("id") Long id) {
         // 修改点赞数量
         blogService.update()
                 .setSql("liked = liked + 1").eq("id", id).update();
@@ -52,7 +53,7 @@ public class BlogController {
     }
 
     @GetMapping("/of/me")
-    public Result queryMyBlog(@RequestParam(value = "current", defaultValue = "1") Integer current) {
+    public @NotNull Result queryMyBlog(@RequestParam(value = "current", defaultValue = "1") Integer current) {
         // 获取登录用户
         UserDTO user = UserHolder.getUser();
         // 根据用户查询
@@ -64,7 +65,7 @@ public class BlogController {
     }
 
     @GetMapping("/hot")
-    public Result queryHotBlog(@RequestParam(value = "current", defaultValue = "1") Integer current) {
+    public @NotNull Result queryHotBlog(@RequestParam(value = "current", defaultValue = "1") Integer current) {
         // 根据用户查询
         Page<Blog> page = blogService.query()
                 .orderByDesc("liked")

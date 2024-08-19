@@ -4,6 +4,7 @@ package com.hmdp.controller;
 import com.hmdp.dto.Result;
 import com.hmdp.entity.Voucher;
 import com.hmdp.service.IVoucherService;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -29,7 +30,7 @@ public class VoucherController {
      * @return 优惠券id
      */
     @PostMapping
-    public Result addVoucher(@RequestBody Voucher voucher) {
+    public @NotNull Result addVoucher(@RequestBody @NotNull Voucher voucher) {
         voucherService.save(voucher);
         return Result.ok(voucher.getId());
     }
@@ -40,7 +41,7 @@ public class VoucherController {
      * @return 优惠券id
      */
     @PostMapping("seckill")
-    public Result addSeckillVoucher(@RequestBody Voucher voucher) {
+    public @NotNull Result addSeckillVoucher(@RequestBody @NotNull Voucher voucher) {
         voucherService.addSeckillVoucher(voucher);
         return Result.ok(voucher.getId());
     }

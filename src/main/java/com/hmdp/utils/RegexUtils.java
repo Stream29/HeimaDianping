@@ -1,6 +1,7 @@
 package com.hmdp.utils;
 
 import cn.hutool.core.util.StrUtil;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @author 虎哥
@@ -11,7 +12,7 @@ public class RegexUtils {
      * @param phone 要校验的手机号
      * @return true:符合，false：不符合
      */
-    public static boolean isPhoneInvalid(String phone){
+    public static boolean isPhoneInvalid(@NotNull String phone){
         return mismatch(phone, RegexPatterns.PHONE_REGEX);
     }
     /**
@@ -19,7 +20,7 @@ public class RegexUtils {
      * @param email 要校验的邮箱
      * @return true:符合，false：不符合
      */
-    public static boolean isEmailInvalid(String email){
+    public static boolean isEmailInvalid(@NotNull String email){
         return mismatch(email, RegexPatterns.EMAIL_REGEX);
     }
 
@@ -28,12 +29,12 @@ public class RegexUtils {
      * @param code 要校验的验证码
      * @return true:符合，false：不符合
      */
-    public static boolean isCodeInvalid(String code){
+    public static boolean isCodeInvalid(@NotNull String code){
         return mismatch(code, RegexPatterns.VERIFY_CODE_REGEX);
     }
 
     // 校验是否不符合正则格式
-    private static boolean mismatch(String str, String regex){
+    private static boolean mismatch(@NotNull String str, @NotNull String regex){
         if (StrUtil.isBlank(str)) {
             return true;
         }

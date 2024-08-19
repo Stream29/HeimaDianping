@@ -5,6 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import com.hmdp.dto.Result;
 import com.hmdp.utils.SystemConstants;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,7 +19,7 @@ import java.util.UUID;
 public class UploadController {
 
     @PostMapping("blog")
-    public Result uploadImage(@RequestParam("file") MultipartFile image) {
+    public @NotNull Result uploadImage(@RequestParam("file") @NotNull MultipartFile image) {
         try {
             // 获取原始文件名称
             String originalFilename = image.getOriginalFilename();
@@ -35,7 +36,7 @@ public class UploadController {
     }
 
     @GetMapping("/blog/delete")
-    public Result deleteBlogImg(@RequestParam("name") String filename) {
+    public @NotNull Result deleteBlogImg(@RequestParam("name") @NotNull String filename) {
         File file = new File(SystemConstants.IMAGE_UPLOAD_DIR, filename);
         if (file.isDirectory()) {
             return Result.fail("错误的文件名称");

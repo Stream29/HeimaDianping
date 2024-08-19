@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -50,7 +51,7 @@ public class User implements Serializable {
     /**
      * 用户头像
      */
-    private String icon = "";
+    private @NotNull String icon = "";
 
     /**
      * 创建时间

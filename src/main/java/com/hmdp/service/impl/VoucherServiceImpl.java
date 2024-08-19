@@ -7,6 +7,7 @@ import com.hmdp.mapper.VoucherMapper;
 import com.hmdp.entity.SeckillVoucher;
 import com.hmdp.service.ISeckillVoucherService;
 import com.hmdp.service.IVoucherService;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,7 +29,7 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
     private ISeckillVoucherService seckillVoucherService;
 
     @Override
-    public Result queryVoucherOfShop(Long shopId) {
+    public @NotNull Result queryVoucherOfShop(Long shopId) {
         // 查询优惠券信息
         List<Voucher> vouchers = getBaseMapper().queryVoucherOfShop(shopId);
         // 返回结果
@@ -37,7 +38,7 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
 
     @Override
     @Transactional
-    public void addSeckillVoucher(Voucher voucher) {
+    public void addSeckillVoucher(@NotNull Voucher voucher) {
         // 保存优惠券
         save(voucher);
         // 保存秒杀信息

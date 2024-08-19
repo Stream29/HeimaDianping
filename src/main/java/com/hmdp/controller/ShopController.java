@@ -7,6 +7,7 @@ import com.hmdp.dto.Result;
 import com.hmdp.entity.Shop;
 import com.hmdp.service.IShopService;
 import com.hmdp.utils.SystemConstants;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -32,7 +33,7 @@ public class ShopController {
      * @return 商铺详情数据
      */
     @GetMapping("/{id}")
-    public Result queryShopById(@PathVariable("id") Long id) {
+    public @NotNull Result queryShopById(@PathVariable("id") Long id) {
         return Result.ok(shopService.getById(id));
     }
 
@@ -42,7 +43,7 @@ public class ShopController {
      * @return 商铺id
      */
     @PostMapping
-    public Result saveShop(@RequestBody Shop shop) {
+    public @NotNull Result saveShop(@RequestBody @NotNull Shop shop) {
         // 写入数据库
         shopService.save(shop);
         // 返回店铺id
@@ -55,7 +56,7 @@ public class ShopController {
      * @return 无
      */
     @PutMapping
-    public Result updateShop(@RequestBody Shop shop) {
+    public @NotNull Result updateShop(@RequestBody Shop shop) {
         // 写入数据库
         shopService.updateById(shop);
         return Result.ok();
@@ -68,7 +69,7 @@ public class ShopController {
      * @return 商铺列表
      */
     @GetMapping("/of/type")
-    public Result queryShopByType(
+    public @NotNull Result queryShopByType(
             @RequestParam("typeId") Integer typeId,
             @RequestParam(value = "current", defaultValue = "1") Integer current
     ) {
@@ -87,7 +88,7 @@ public class ShopController {
      * @return 商铺列表
      */
     @GetMapping("/of/name")
-    public Result queryShopByName(
+    public @NotNull Result queryShopByName(
             @RequestParam(value = "name", required = false) String name,
             @RequestParam(value = "current", defaultValue = "1") Integer current
     ) {
