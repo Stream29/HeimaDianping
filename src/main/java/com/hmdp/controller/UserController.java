@@ -39,15 +39,7 @@ public class UserController {
      */
     @PostMapping("code")
     public @NotNull Result sendCode(@RequestParam("phone") @NotNull String phone, @NotNull HttpSession session) {
-        if (RegexUtils.isPhoneInvalid(phone)) {
-            return Result.fail("手机号格式错误！");
-        }
-        String code = RandomUtil.randomNumbers(6);
-
-        session.setAttribute("code",code);
-        log.debug("发送短信验证码成功，验证码：{}", code);
-        //TODO: 发送短信验证码
-        return Result.ok();
+        return userService.sendCode(phone, session);
     }
 
     /**
@@ -56,8 +48,7 @@ public class UserController {
      */
     @PostMapping("/login")
     public @NotNull Result login(@RequestBody LoginFormDTO loginForm, HttpSession session){
-        // TODO 实现登录功能
-        return Result.fail("功能未完成");
+        return userService.login(loginForm, session);
     }
 
     /**
