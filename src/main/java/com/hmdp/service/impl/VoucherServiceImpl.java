@@ -2,21 +2,24 @@ package com.hmdp.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hmdp.dto.Result;
+import com.hmdp.entity.SeckillVoucher;
 import com.hmdp.entity.Voucher;
 import com.hmdp.mapper.VoucherMapper;
-import com.hmdp.entity.SeckillVoucher;
 import com.hmdp.service.ISeckillVoucherService;
 import com.hmdp.service.IVoucherService;
+import lombok.val;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.List;
+
+import static com.hmdp.utils.RedisConstants.SECKILL_STOCK_KEY;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author 虎哥
@@ -27,13 +30,13 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
 
     @Resource
     private ISeckillVoucherService seckillVoucherService;
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
 
     @Override
     public @NotNull Result queryVoucherOfShop(Long shopId) {
-        // 查询优惠券信息
-        List<Voucher> vouchers = getBaseMapper().queryVoucherOfShop(shopId);
-        // 返回结果
-        return Result.ok(vouchers);
+        return Result.ok(
+                getBaseMapper().queryVoucherOfShop(shopId));
     }
 
     @Override
@@ -42,11 +45,15 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
         // 保存优惠券
         save(voucher);
         // 保存秒杀信息
-        SeckillVoucher seckillVoucher = new SeckillVoucher();
-        seckillVoucher.setVoucherId(voucher.getId());
-        seckillVoucher.setStock(voucher.getStock());
-        seckillVoucher.setBeginTime(voucher.getBeginTime());
-        seckillVoucher.setEndTime(voucher.getEndTime());
-        seckillVoucherService.save(seckillVoucher);
+        val seckillVoucher =
+                new SeckillVoucher()
+                        .setVoucherId(voucher.getId())
+                        .setStock(voucher.getStock())
+                        .setBeginTime(voucher.getBeginTime())
+                        .setEndTime(voucher.getEndTime());
+
+        stringRedisTemplate
+                .opsForValue()
+                .set(SECKILL_STOCK_KEY + voucher.getId(), voucher.getStock().toString());
     }
 }
